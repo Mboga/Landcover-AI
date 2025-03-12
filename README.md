@@ -1,9 +1,11 @@
-# CI_CD_Tutorial
-A repository to demonstrate CI and CD in GitHub
+# LANDCOVR CLASSIFICATION USING DEEP LEARNING
+A repository demonstrating landcover classification using deeplearning. The use of software development tools in machine learning such as CICD, DVC, MLflow.model development in using PyTorch Lightning.
 
 # Project Summary
 
-The aim of the repository is to provide a tutorial on CICD in github. CICD stands for Continuous Integration and Continuous Development.
+The aim of the repository is to showcase the use of several software development tools in a machine learning project. Tutorials of various tools are provided. Where possible, extra information on the tools is provided.
+
+One of such tools is CICD using Github actions. CICD stands for Continuous Integration and Continuous Development.
 In Software development, software development is often fast-paced. CICD can helps to assure the product quality while enhancing development efficiency.
 
 In brief, benefits of CICD are:
@@ -20,9 +22,10 @@ The test project will be a simple machine learning project. The basic workflows 
 
 # Test Project: Data
 
-We will use the MNIST dataset. It is a handwritten digitized dataset of numbers. The objective is to train a model that can predict a digit from the handwritten number. 
+We will use the EuroSAT dataset. This is a dataset that is generated from Sentinel 2 imagery. It contains 10 landcover classes. For the demonstration, we will use a reduced dataset size of 1000 images sampled from 35000 imagery.
 
-I select this dataset because it is a light dataset, and the aim of this tutorial is to explore CICD actions using github actions.
+The EuroSAT dataset can be accessed from the url: https://zenodo.org/records/7711810#.ZAm3k-zMKEA 
+I select this dataset because it is a well curated benchmark datasset that is publicly available. Further, the aim of this repo is to explore CICD actions using github actions.
 
 # Test Project: Deep learning Framework
 
