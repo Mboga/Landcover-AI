@@ -1,4 +1,4 @@
-# LANDCOVR CLASSIFICATION USING DEEP LEARNING
+# LANDCOVER CLASSIFICATION USING DEEP LEARNING
 A repository demonstrating landcover classification using deeplearning. The use of software development tools in machine learning such as CICD, DVC, MLflow.model development in using PyTorch Lightning.
 
 # Project Summary
