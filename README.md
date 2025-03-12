@@ -13,3 +13,26 @@ In brief, benefits of CICD are:
 4. Increased efficiency: Automation of integration and testing and deployment processes allow developers to focus on writing code other than manual tasks.
 5. Better Collaboration: With CICD, teams are smaller and can work on specific items without conflicting with others
 6. Continuous Feedback: The automated deployment process in CD allows for swift observation of software performance in production, enabliing faster/quick response to problems and issues when they arise.
+
+# Test Project
+
+The test project will be a simple machine learning project. The basic workflows will comprise of data preparation, model training, and model testing. 
+
+# Test Project: Data
+
+We will use the MNIST dataset. It is a handwritten digitized dataset of numbers. The objective is to train a model that can predict a digit from the handwritten number. 
+
+I select this dataset because it is a light dataset, and the aim of this tutorial is to explore CICD actions using github actions.
+
+# Test Project: Deep learning Framework
+
+We will use the Pytorch Lightning deep learning Framework. It is based on pytorch and has the following advantages of vanilla pytorch.
+[] Simplified code structure: organise code into logical setions (training, validation testing) within the lightningmodule. standardized interface for defining models, data loading and training routines
+[] Enhanced Productivity: Automated common tasks like data loading, checkpointing and logging, Easy integration with experiment tracking tools ( tensorboard, WandB)
+[] Scalability and performance: mixed precision training, simplfied multi-GPU and distributed training setups
+[] Best practices and Reproducibility: Modular and organosed code structure, built-in supprot for reproducibility such as deterministic traning, automatics checkpointing
+[] Flexibility and Customisation: specific methods can be overriden for custom logic when needed. Multiple domains support
+
+
+
+
