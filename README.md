@@ -27,11 +27,11 @@ I select this dataset because it is a light dataset, and the aim of this tutoria
 # Test Project: Deep learning Framework
 
 We will use the Pytorch Lightning deep learning Framework. It is based on pytorch and has the following advantages of vanilla pytorch.
-[x] Simplified code structure: organise code into logical setions (training, validation testing) within the lightningmodule. standardized interface for defining models, data loading and training routines
-[x] Enhanced Productivity: Automated common tasks like data loading, checkpointing and logging, Easy integration with experiment tracking tools ( tensorboard, WandB)
-[x] Scalability and performance: mixed precision training, simplfied multi-GPU and distributed training setups
-[x] Best practices and Reproducibility: Modular and organosed code structure, built-in supprot for reproducibility such as deterministic traning, automatics checkpointing
-[x] Flexibility and Customisation: specific methods can be overriden for custom logic when needed. Multiple domains support
+- [x] Simplified code structure: organise code into logical setions (training, validation testing) within the lightningmodule. standardized interface for defining models, data loading and training routines
+- [x] Enhanced Productivity: Automated common tasks like data loading, checkpointing and logging, Easy integration with experiment tracking tools ( tensorboard, WandB)
+- [x] Scalability and performance: mixed precision training, simplfied multi-GPU and distributed training setups
+- [x] Best practices and Reproducibility: Modular and organosed code structure, built-in supprot for reproducibility such as deterministic traning, automatics checkpointing
+- [x] Flexibility and Customisation: specific methods can be overriden for custom logic when needed. Multiple domains support
 
 
 
