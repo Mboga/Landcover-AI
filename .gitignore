@@ -3,3 +3,6 @@
 
 #ignore data folder
 data/
+
+#ignore virtual environments folder
+earth_vision/
