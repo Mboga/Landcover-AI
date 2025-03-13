@@ -37,5 +37,34 @@ We will use the Pytorch Lightning deep learning Framework. It is based on pytorc
 - [x] Flexibility and Customisation: specific methods can be overriden for custom logic when needed. Multiple domains support
 
 
+# Test Project: Installation
+
+I provide the installation set up in a mac OS with M3 Chips.
+
+1. Create a virtual environment using the venv module. We have Python 3.9.6 installed in the PC.
+
+``` python3 -m venv earth_vision```
+
+2. Activate the virtual environment named earth_vision.
+
+``` source earth_vision/bin/activate```
+
+3. The terminal prompt will then change to indicate that you are working inside the virtual environment. Verify the python version that you are working on
+
+``` python --version```
+
+4. To deactivate the virtual environment, remember to simply run deactivate.
+
+``` deactivate```
+
+- Virtual environments are project specific, allowing you to manage dependencies independently for each project.
 
 
+5. For a mac environment, the following environment variables need to be set. This is because we are not using an nvidia chip, but instead an apple silicon based chip.
+
+``` export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1```
+``` export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1 ```
+
+6. Install the packages contained in the requirements.txt file:
+
+``` pip install -r requirements.txt```
