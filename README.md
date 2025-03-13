@@ -60,7 +60,7 @@ I provide the installation set up in a mac OS with M3 Chips.
 - Virtual environments are project specific, allowing you to manage dependencies independently for each project.
 
 
-5. For a mac environment, the following environment variables need to be set. This is because we are not using an nvidia chip, but instead an apple silicon based chip.
+5. For a mac environment, the following environment variables need to be set (https://pytorch-lighting.readthedocs.io/en/latest/starter/installation_mac.html). This is because we are not using an nvidia chip, but instead an apple silicon based chip.
 
 ``` export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1```
 ``` export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1 ```
