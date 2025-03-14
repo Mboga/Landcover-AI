@@ -22,6 +22,8 @@ Example:
     To Do
 
 """
+# ToDo
+# add log during execution
 
 #import libraries
 import os
@@ -45,7 +47,7 @@ class CustomVGG(L.LightningModule):
         self.vgg16 = models.vgg16(weights='DEFAULT')
 
         #Modify the feature extractor: remive las maxpool layer
-        self.features = nn.Sequential(*list(vgg16.features.children())[:-1])
+        self.features = nn.Sequential(*list(self.vgg16.features.children())[:-1])
 
         #2. Freeze convolutional layers/feature extrator (transfer learning standard practice)
         
@@ -57,7 +59,7 @@ class CustomVGG(L.LightningModule):
 
         self.classifier=nn.Sequential(
              nn.AdaptiveAvgPool2d((1,1)), # handle variying spatial dimensions
-             nn.Flatten, # Convert 3d features to 1d
+             nn.Flatten(), # Convert 3d features to 1d
              nn.Linear(512,256), # First fully connected layer
              nn.ReLU(inplace=True), # Activation function
              nn.Dropout(0.5), # Regularization
@@ -65,37 +67,37 @@ class CustomVGG(L.LightningModule):
 
         )
 
-        # forward pass
-        def forward(self,x):
-             # feature extract -> classification
-             x = self.features(x)  # Pass through modified VGG16 backbone
+    # forward pass
+    def forward(self,x):
+            # feature extract -> classification
+            x = self.features(x)  # Pass through modified VGG16 backbone
 
-             return self.classifier(x)  # Pass through the custom classifier
-        
-        #Training logic
-        def training_step(self, batch, batch_idx):
-             x,y=batch         # unpacj input/labels
-             y_hat = self(x)   #Forward pass
-             loss = nn.functional.cross_entropy(y_hat,y) # calculate the loss
-             self.log('train_loss', loss)  # Log to monitoring system
-             return loss
+            return self.classifier(x)  # Pass through the custom classifier
+    
+    #Training logic
+    def training_step(self, batch, batch_idx):
+            x,y=batch         # unpack input/labels
+            y_hat = self(x)   #Forward pass
+            loss = nn.functional.cross_entropy(y_hat,y) # calculate the loss
+            self.log('train_loss', loss)  # Log to monitoring system
+            return loss
 
-        #Validation Logic
-        def validation_step(self,batch, batch_idx):
-             x,y = batch
-             y_hat = self(x)
-             loss = nn.functional.cross_entropy(y_hat,y)
-             acc = (y_hat.argmax(dim=1) == y).float().mean() # Accuracy calculation
-             self.log('val_loss',loss)  # Log validation loss
-             self.log('val_acc', acc)   # Log validation accuracy
+    #Validation Logic
+    def validation_step(self,batch, batch_idx):
+            x,y = batch
+            y_hat = self(x)
+            loss = nn.functional.cross_entropy(y_hat,y)
+            acc = (y_hat.argmax(dim=1) == y).float().mean() # Accuracy calculation
+            self.log('val_loss',loss)  # Log validation loss
+            self.log('val_acc', acc)   # Log validation accuracy
 
-        #OPTIMIZER CONFIGURATION
+    #OPTIMIZER CONFIGURATION
 
-        def configure_optimizers(self):
-             # Only optimze classifier  parameters (features remain frozen)
-             return optim.Adam(self.classifier.parameters(),
-                               lr = self.hparams.learning_rate)
-        
+    def configure_optimizers(self):
+            # Only optimze classifier  parameters (features remain frozen)
+            return optim.Adam(self.classifier.parameters(),
+                            lr = self.hparams.learning_rate)
+    
 
 # custom dataset class that inherits from PyTorch' Dataset
 class EuroSATDataset(Dataset):
@@ -106,7 +108,7 @@ class EuroSATDataset(Dataset):
           self.data_dir = self.transform = transform
           self.images = []
           self.labels = []
-          self.class_names = os.listdir(data_dir)
+          self.class_names = [f for f in os.listdir(data_dir) if f != '.DS_Store']
 
           #populate images and labels lists
 
@@ -128,9 +130,9 @@ class EuroSATDataset(Dataset):
          -returns the image and its label
          
          '''
-         img_path = self.images(idx)
+         img_path = self.images[idx]
          image = Image.open(img_path)
-         label = self.labelslabels[idx]
+         label = self.labels[idx]
 
          if self.transform:
               image = self.transform(image)
@@ -165,13 +167,13 @@ class EuroSATDataModule(L.LightningDataModule):
           self.train_dataset, self.val_dataset, self.test_dataset = random_split(full_dataset, [train_size, val_size, test_size])
      
      def train_dataloader(self):
-          return DataLoader(self.train_dataset, batch_size = self.batch_size,shuffle = True, num_workers=self.num_workers)
+          return DataLoader(self.train_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
 
      def val_dataloader(self):
-          return DataLoader(self.val_dataset, batch_size = self.batch_size,shuffle = True, num_workers=self.num_workers)
+          return DataLoader(self.val_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
      
      def test_dataloader(self):
-          return DataLoader(self.test_dataset, batch_size = self.batch_size,shuffle = True, num_workers=self.num_workers)
+          return DataLoader(self.test_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
 
  
 # STEP 2: RUN THE TRAINER
