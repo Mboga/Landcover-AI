@@ -78,6 +78,10 @@ for i, img_path in enumerate(images_paths):
 
 # adjust the layout and display
 plt.tight_layout
+
+# save the plot as a jpg
+# To Do
+
 plt.show()
 
 
