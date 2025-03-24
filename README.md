@@ -124,8 +124,27 @@ How to write Effective Unit Tests:
 
 Best practices for Unit Testing:
 - **Write Reliable and clear Unit Tests**: Should be provide clear, reproducible results. Use assertions and meaningful test case descriptions
-- *Automate Unit Testing*: Automate unit tests to gain fast feedback and improve test coverage
-- 
+- **Automate Unit Testing**: Automate unit tests to gain fast feedback and improve test coverage
+- **Focus on use cases**: prioritize how to write unit tests based on real-world uses cases, ensureing the code is easily maintainable and understandable
+- **Integrate Unit Testing into CI/CD pipelines** Run unit tests in CI/CD to detect issues early on
+- **Follow consistent Naming Conventions** Use a standard test naming convention to improve readability and defect tracking 
+
+An example of unit testing in python using PyTest
+
+```
+# code to be tested
+def add_numbers(a,b):
+    retunr  a + B
+
+#Unit test
+import pytest
+
+def test_add_numbers():
+    assert add_numbers(2,3) == 5
+    assert add_numbers(-1,1) == 0
+    assert add_numbers(0,0) == 0
+
+```
 
 
 
