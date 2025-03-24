@@ -73,3 +73,60 @@ I provide the installation set up in a mac OS with M3 Chips.
 
 Github actions will be used to implement the Continuous Integration and Continuous Deployment framework
 
+# Test Project: Testing
+
+Software testing is needed in the development process to ensure that the application mets the requirements and functions as intended.
+
+They include:
+1. Unit testing: Validates individual components /functions in isolation
+2. Integration testiing: Checks hos different modules/components work together
+3. Functional testing: Ensures the software meets specified functional requirements
+4. System Testing: Evaluates the complete, integrated system against specified requirements
+5. Acceptance testing: verifies if the software meets user/business requirements
+6. Performance Testing: Assesses speed, responsivity and stability under various conditions
+7. Security Testing: Identifies vulnerabilities and ensures data protection
+8. Usability Testing:Evaluates user-friendliness and overall usr experience
+9. Compatibility testing: checks functionality acoss different environments, devices and browsers
+10. Regression Testing: Ensures existing features will still work after changes or updates
+
+These tests are done in a commbination of manual and automated approaches with the goal of improving software quality, reliability and user satisfaction. 
+
+
+# Test project: Unit Tests
+
+Summary of the blog found in the link (https://www.accelq.com/blog/unit-testing/) 
+
+
+Unit testing is a type of software testing where individual units/components of a software are tested
+
+- Focus on testing small isolated units of code
+- Conducted during the development phase
+- manual/automated
+- aims to catch defects early before system integration
+
+Importance:
+
+- Early bug detection
+- Improved code quality - enforces modular programming => Clean, structured codebase
+- Facilitate refactoring
+- Act as documentation : reference point for new developers, helping them understand the expected behaviour of different components
+- automation enhances speed of development
+
+How to write Effective Unit Tests:
+
+- Determine the smallest testatble part of your application =>function/method
+- Write test cases => normal cases, edge/boundary cases, error conditions
+- Isolate the unit =>use mocks and stubs to simulate the dependencises, ensuring the unit functions independently
+- Run the tests=> utilize the testing frameworks : ( JUnit for Java, NUnit for .NET or PyTest for Python) to execute the test cases
+- Review the results: Analyze the  tests results to identify and resolve any failures
+- Refactor and Retest: After making the changes, rerun the tests to validate code integrity
+
+
+Best practices for Unit Testing:
+- **Write Reliable and clear Unit Tests**: Should be provide clear, reproducible results. Use assertions and meaningful test case descriptions
+- *Automate Unit Testing*: Automate unit tests to gain fast feedback and improve test coverage
+- 
+
+
+
+
