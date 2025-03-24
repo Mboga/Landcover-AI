@@ -68,3 +68,8 @@ I provide the installation set up in a mac OS with M3 Chips.
 6. Install the packages contained in the requirements.txt file:
 
 ``` pip install -r requirements.txt```
+
+# Test Project: CICD framework
+
+Github actions will be used to implement the Continuous Integration and Continuous Deployment framework
+
