@@ -225,22 +225,92 @@ if __name__ == "__main__":
      parser.add_argument('--precision',choices=['16','32'], defailt='32')
      parser.add_argument('--export_onnx',action='store_true')
      parser.add_argument('--onnx_path',default='eurosat_vgg.onnx', type=str)
-     parser
+     parser.add_argument('--disable_progress',action='store_true')
+     args = parser.parse_args()
 
-     # data dir
-     data_dir = './data/EuroSAT_RGB_250'
-     # create an instance of the EuroSATDataModule
-     data_module = EuroSATDataModule(data_dir)
-     #Call the setup method to prepare the Data
 
+     #Data Module
+     data_module = EuroSATDataModule(
+           data_dir=args.data_dir,
+           batch_size=args.batch_size,
+           num_workers=4
+     )
      data_module.setup()
 
-     #use with a Lightning Trainer
-     model = CustomVGG(num_classes=10) # initialize the model
+     # Training mode
 
-     trainer = L.Trainer(
-          max_epochs = 5,   #Train for 10 passes through the datast
-          accelerator = 'auto' #automatically use GPU if available
-     )
-     trainer.fit(model, datamodule = data_module)
+     if args.mode == 'traini':
+           model = CustomVGG(num_classes=10)
+
+           trainer= L.Trainer(
+                 max_epochs=5,
+                 accelerator='auto',
+                 precision=args.precision,
+                 callbacks=[
+                       L.pytorch.callbacks.ModelCheckpoint(
+                             monitor='val_acc',
+                             mode='max',
+                             save_toop_k=1,
+                             file_name='best-{epoch:02d}-{val_acc:.2f}'
+        
+                       )
+                       
+                 ],
+                 enable_progress_bar=not args.disable_progress
+
+           )
+
+           trainer.fit(model, datamodule=data_module)
+
+           # Export to ONNX if specified 
+           if args.export_onnx:
+                 model.to_onnx(
+                       args.onnx_path,
+                       input_sample = torch.randn(1,3,64,64)
+                       export_params=True,
+                       input_names=['input'],
+                       output_names=['output'],
+                       dynamic_axes={
+                             'input':{0: 'batch_size'},
+                             'output':{0: 'batch_size'}
+                       }
+
+                 )
+
+                 print (f'Model exported to {args.onnx_path}')
+
+            # Inference Mode
+
+     elif args.mode == 'inference':
+           if not args.checkpoint:
+                 raise ValueError ('Checkpoint path required for inference')
+           
+           model = CustomVGG.load_from_checkpoint(args.checkpoint)
+           model.eval()
+
+           trainer = L.Trainer(
+                 accelerator = 'auto', # use gpu if available
+                 inference_mode=True,
+                 enable_progress_bar=not args.disable_progress,
+                 logger = False
+           )
+
+           # Generate predictions
+
+           predictions = trainer.predict(model,datamodule=data_module.test_dataloader())
+           preds = torch.cat([p['predictions'] for p in predictions])
+           probs = torch.cat([p['probabilities'] for p in predictions])
+           labels = torch.cat([p['true_labels'] for p in predictions])
+
+           #Calculate accuracy 
+
+           acc = (preds == labels).float().mean()
+
+           
+
+     
+                 
+
+
+
 
