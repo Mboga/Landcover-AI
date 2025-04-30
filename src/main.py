@@ -29,6 +29,7 @@ Example:
 
 #import libraries
 import os
+import sys
 import torch
 from PIL import Image
 import lightning as L
@@ -222,7 +223,7 @@ if __name__ == "__main__":
      parser.add_argument('--checkpoint',type=str,help='Model checkpoint path')
      parser.add_argument('--data_dir',default='./data/EuroSAT_RGB_250')
      parser.add_argument('--batch_size', default=8,type=int)
-     parser.add_argument('--precision',choices=['16','32'], defailt='32')
+     parser.add_argument('--precision',choices=['16','32'], default='32')
      parser.add_argument('--export_onnx',action='store_true')
      parser.add_argument('--onnx_path',default='eurosat_vgg.onnx', type=str)
      parser.add_argument('--disable_progress',action='store_true')
@@ -239,7 +240,7 @@ if __name__ == "__main__":
 
      # Training mode
 
-     if args.mode == 'traini':
+     if args.mode == 'train':
            model = CustomVGG(num_classes=10)
 
            trainer= L.Trainer(
@@ -250,8 +251,8 @@ if __name__ == "__main__":
                        L.pytorch.callbacks.ModelCheckpoint(
                              monitor='val_acc',
                              mode='max',
-                             save_toop_k=1,
-                             file_name='best-{epoch:02d}-{val_acc:.2f}'
+                             save_top_k=1,
+                             filename='best-{epoch:02d}-{val_acc:.2f}'
         
                        )
                        
@@ -263,21 +264,34 @@ if __name__ == "__main__":
            trainer.fit(model, datamodule=data_module)
 
            # Export to ONNX if specified 
+           # Export failed:'NoneType' object has no attribute 'flush'
+           if sys.stdout is not None:
+                 sys.stdout.flush()
            if args.export_onnx:
-                 model.to_onnx(
-                       args.onnx_path,
-                       input_sample = torch.randn(1,3,64,64)
-                       export_params=True,
-                       input_names=['input'],
-                       output_names=['output'],
-                       dynamic_axes={
-                             'input':{0: 'batch_size'},
-                             'output':{0: 'batch_size'}
+                 model.eval()
+
+                 # create input sample matching actual dimensions
+                 input_sample = torch.randn(1,3,64,64)
+
+                 #export with error handling
+
+                 try:
+                       torch.onnx.export(
+                             model,
+                             input_sample,
+                             export_params=True,
+                             input_names=['input'],
+                             output_names=['output'],
+                             dynamic_axes={
+                                   'input':{0: 'batch_size'},
+                                   'output':{0: 'batch_size'}
                        }
 
-                 )
+                       )
+                       print(f'success: Model exported to {args.onnx_path}')
 
-                 print (f'Model exported to {args.onnx_path}')
+                 except Exception as e:
+                       print(f'Export failed:{str(e)}')
 
             # Inference Mode
 
@@ -305,12 +319,3 @@ if __name__ == "__main__":
            #Calculate accuracy 
 
            acc = (preds == labels).float().mean()
-
-           
-
-     
-                 
-
-
-
-
