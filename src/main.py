@@ -1,27 +1,40 @@
 #!/usr/bin/env python3
 
 """
-A script to perform training and testing of deep-learning model using the EuroSAT dataset.
+EuroSAT Image Classification with PyTorch Lightning
 
-The Script is written using the PyTorch Lightning deep learning framework. A VGG-net style (Link to paper that introduced the VGG architecture https://arxiv.org/pdf/1409.1556) model will be designed
-and used as the model architecture. The script performs an image classification task.
+This script handles both training and inference for RGB EuroSAT land cover classification
+using a modified VGG16 architecture. Supports both CPU and GPU execution.
 
-I will be refactoring a script from PyTorch (vanilla) to PyTorch Lightning.
+Features:
+- Training mode with automatic checkpointing
+- Inference mode with prediction generation
+- ONNX export capability
+- Progress bar control
+- Mixed precision training
 
-The input is the directory containing  RGB images of the EuroSAT dataset.
-The sub-directories are the class names of the land cover classes.
-
-The script has flags for training mode and testing mode
-
-https://lightning.ai/docs/pytorch/stable/starter/introduction.html
 Usage:
-    To Do
+    Training:   python script.py --mode train [--batch_size 8] [--precision 32]
+    Inference:  python script.py --mode inference --checkpoint path/to/checkpoint.ckpt
+    Export:     python script.py --mode train --export_onnx --onnx_path model.onnx
 
 Dependencies:
-    To Do
+    torch torchvision lightning Pillow pandas
 
 Example:
-    To Do
+    # Train with mixed precision
+    python script.py --mode train --precision 16
+    
+    # Run inference
+    python script.py --mode inference --checkpoint lightning_logs/version_0/checkpoints/best-checkpoint.ckpt
+
+To Do:
+- docker
+- documentation
+- web app
+https://lightning.ai/docs/pytorch/stable/starter/introduction.html
+https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html
+
 
 """
 # ToDo
@@ -44,6 +57,13 @@ from typing import Optional, Dict, List
 # DEFINE YOUR LIGHTNING MODULE
 
 class CustomVGG(L.LightningModule):
+    """
+    Modified VGG16 for 64x6 RGB EuroSAT images
+
+    Args:
+        num_classes: Number of output classes (10 for EuroSAT)
+        learning_rate: Intitial learning rate
+    """
     def __init__(self, num_classes=10,learning_rate=1e-3):
         super().__init__() # Initialise the parent class
         self.save_hyperparameters() # store hyperparameters for logging
@@ -81,6 +101,7 @@ class CustomVGG(L.LightningModule):
     
     #Training logic
     def training_step(self, batch, batch_idx):
+            """ Training step with loss calculation and logging"""
             x,y=batch         # unpack input/labels
             y_hat = self(x)   #Forward pass
             loss = nn.functional.cross_entropy(y_hat,y) # calculate the loss
@@ -89,6 +110,7 @@ class CustomVGG(L.LightningModule):
 
     #Validation Logic
     def validation_step(self,batch, batch_idx):
+            """Validation step with accuracy calculation"""
             x,y = batch
             y_hat = self(x)
             loss = nn.functional.cross_entropy(y_hat,y)
@@ -136,10 +158,14 @@ class CustomVGG(L.LightningModule):
                 9: 'SeaLake'
           }
 
-# custom dataset class that inherits from PyTorch' Dataset
+# define custom dataset class that inherits from PyTorch' Dataset
 class EuroSATDataset(Dataset):
     '''
     This custom dataset class inherits from the PyTorch Dataset class
+    EuroSAT RGB Dataset Loader
+    Args:
+        data_dir: Path to dataset root directory
+        transform: Torchvision transforms to apply
     '''
     def __init__(self, data_dir, transform=None):
           self.data_dir = self.transform = transform
@@ -179,6 +205,14 @@ class EuroSATDataset(Dataset):
      
 # Defines a Lighning DataModule for handling the EuroSAT dataset
 class EuroSATDataModule(L.LightningDataModule):
+     """
+     Data handling module for EuroSAT with train/val/test splits
+
+     Args:
+        data_dir: Path to dataset root directory
+        batch_size: Samples per batch
+        num_workers: CPU workers for data loading
+     """
      def __init__(self, data_dir, batch_size = 8, num_workers=4):
           super().__init__()
           self.data_dir = data_dir
@@ -311,11 +345,17 @@ if __name__ == "__main__":
 
            # Generate predictions
 
-           predictions = trainer.predict(model,datamodule=data_module.test_dataloader())
+           #predictions = trainer.predict(model,datamodule=data_module)
+           #option 2: 
+           predictions = trainer.predict(model, dataloaders=data_module.test_dataloader())
            preds = torch.cat([p['predictions'] for p in predictions])
            probs = torch.cat([p['probabilities'] for p in predictions])
            labels = torch.cat([p['true_labels'] for p in predictions])
 
            #Calculate accuracy 
+           #print(len(preds))
+           print("done processing")
 
            acc = (preds == labels).float().mean()
+           print(f'accuracy is: {acc}')
+           #Consider setting `persistent_workers=True` in 'predict_dataloader' to speed up the dataloader worker initialization.
