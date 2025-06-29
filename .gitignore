@@ -1,5 +1,6 @@
 # ignore MacOS system files
 .DS_Store
+src/train.py
 
 #ignore data folder
 data/
