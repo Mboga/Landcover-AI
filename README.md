@@ -53,6 +53,36 @@ I provide the installation set up in a mac OS with M3 Chips using python virtual
 
 ``` pip install -r requirements.txt```
 
+# Script Usage 
 
+on the command line: 
 
+```
+usage: main.py [-h] -mode {train,inference} [--checkpoint CHECKPOINT] [--data_dir DATA_DIR] [--batch_size BATCH_SIZE] [--precision {16,32}] [--export_onnx] [--onnx_path ONNX_PATH] [--disable_progress]
 
+EuroSAT Land Cover Classification
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -mode {train,inference}
+  --checkpoint CHECKPOINT
+                        Model checkpoint path
+  --data_dir DATA_DIR
+  --batch_size BATCH_SIZE
+  --precision {16,32}
+  --export_onnx
+  --onnx_path ONNX_PATH
+  --disable_progress
+
+```
+
+- for default parameters
+training
+
+```
+python src/main.py -mode train
+```
+testing 
+```
+python src/main.py -mode inference
+```
