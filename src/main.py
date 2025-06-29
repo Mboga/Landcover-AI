@@ -38,6 +38,8 @@ https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial
 
 """
 # ToDo
+# save to csv
+# to save filename to enable visualisation
 # add log during execution
 
 #import libraries
@@ -241,10 +243,10 @@ class EuroSATDataModule(L.LightningDataModule):
           return DataLoader(self.train_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
 
      def val_dataloader(self):
-          return DataLoader(self.val_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
+          return DataLoader(self.val_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers,persistent_workers=True)
      
      def test_dataloader(self):
-          return DataLoader(self.test_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers)
+          return DataLoader(self.test_dataset, batch_size = self.batch_size,shuffle = False, num_workers=self.num_workers,persistent_workers=True)
 
  
 # STEP 2: RUN THE TRAINER
