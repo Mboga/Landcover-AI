@@ -84,5 +84,5 @@ python src/main.py -mode train
 ```
 testing 
 ```
-python src/main.py -mode inference
+python src/main.py -mode inference --checkpoint lightning_logs/version_8/checkpoints/best-epoch=04-val_acc=0.76.ckpt
 ```
