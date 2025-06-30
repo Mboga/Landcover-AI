@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 """
+© 2025, Savanna-AI and Nicholus Mboga, nicholus.mboga@savanna-ai.be
+All rights reserved: Software for Teaching purposes only. For any commercial use contact nicholus.mboga@savanna-ai.be
+
 EuroSAT Image Classification with PyTorch Lightning
 
 This script handles both training and inference for RGB EuroSAT land cover classification
@@ -28,19 +31,7 @@ Example:
     # Run inference
     python script.py --mode inference --checkpoint lightning_logs/version_0/checkpoints/best-checkpoint.ckpt
 
-To Do:
-- docker
-- documentation
-- web app
-https://lightning.ai/docs/pytorch/stable/starter/introduction.html
-https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html
-
-
 """
-# ToDo
-# save to csv
-# to save filename to enable visualisation
-# add log during execution
 
 #import libraries
 import os
