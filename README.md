@@ -1,9 +1,6 @@
 # LANDCOVER CLASSIFICATION USING DEEP LEARNING
 A repository demonstrating landcover classification using deeplearning. We use PyTorch Lightning deep learning framework. 
 
-# Project Summary
-
-
 
 # Test Project: Data
 
@@ -86,3 +83,12 @@ testing
 ```
 python src/main.py -mode inference --checkpoint lightning_logs/version_8/checkpoints/best-epoch=04-val_acc=0.76.ckpt
 ```
+
+- jupyter notebook to perform inference on a folder of images
+
+```
+src/notebooks/test_inference.ipynb
+```
+
+- Reach out for any questions, comments or requests: nicholus.mboga@savanna-ai.be
+- Course material created by Savanna AI (https://savanna-ai.be)
