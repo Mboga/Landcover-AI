@@ -337,9 +337,6 @@ if __name__ == "__main__":
            )
 
            # Generate predictions
-
-           #predictions = trainer.predict(model,datamodule=data_module)
-           #option 2: 
            predictions = trainer.predict(model, dataloaders=data_module.test_dataloader())
            preds = torch.cat([p['predictions'] for p in predictions])
            probs = torch.cat([p['probabilities'] for p in predictions])
@@ -351,4 +348,4 @@ if __name__ == "__main__":
 
            acc = (preds == labels).float().mean()
            print(f'accuracy is: {acc}')
-           #Consider setting `persistent_workers=True` in 'predict_dataloader' to speed up the dataloader worker initialization.
+      
